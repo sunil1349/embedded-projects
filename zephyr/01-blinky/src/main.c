@@ -15,6 +15,9 @@ int main(void)
         return 0;
     }
 
+    if (led_driver_init() != 0) {
+        printk("LED driver init failed\n");
+    }
     while (1) {
         gpio_pin_toggle_dt(&led);
         printk("hello world\n");

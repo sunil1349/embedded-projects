@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 #include "command_parser.h"
+#include "led_driver.h"
 #include "uart_driver.h"
 
 #define CMD_BUF_SIZE 64
@@ -18,6 +19,9 @@ static void process_command(const char *cmd)
         uart_driver_send_string("  status\r\n");
         uart_driver_send_string("  echo on\r\n");
         uart_driver_send_string("  echo off\r\n");
+        uart_driver_send_string("  led on\r\n");
+        uart_driver_send_string("  led off\r\n");
+        uart_driver_send_string("  led toggle\r\n");
     } else if (strcmp(cmd, "status") == 0) {
         uart_driver_send_string("\r\nSystem OK\r\n");
     } else if (strcmp(cmd, "echo on") == 0) {
@@ -26,7 +30,23 @@ static void process_command(const char *cmd)
     } else if (strcmp(cmd, "echo off") == 0) {
         echo_enabled = false;
         uart_driver_send_string("\r\nEcho disabled\r\n");
-    } else if (cmd[0] != '\0') {
+    }
+    else if (strcmp(cmd, "led on") == 0) 
+    {
+        led_driver_on();
+        uart_driver_send_string("\r\nLED ON\r\n");
+    } 
+    else if (strcmp(cmd, "led off") == 0) 
+    {
+        led_driver_off();
+        uart_driver_send_string("\r\nLED OFF\r\n");
+    }
+    else if (strcmp(cmd, "led toggle") == 0) 
+    {
+        led_driver_toggle();
+        uart_driver_send_string("\r\nLED TOGGLED\r\n");
+    }
+    else if (cmd[0] != '\0') {
         uart_driver_send_string("\r\nUnknown command\r\n");
     }
 

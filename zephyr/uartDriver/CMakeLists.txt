@@ -8,6 +8,7 @@ target_sources(app PRIVATE
     src/ring_buffer.c
     src/uart_driver.c
     src/command_parser.c
+    src/led_driver.c
 )
 
 target_include_directories(app PRIVATE
